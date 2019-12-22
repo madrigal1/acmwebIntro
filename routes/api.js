@@ -17,26 +17,25 @@ router.get('/tempConv',(req,res)=>{
      res.end(JSON.stringify(data));
 });
 
+
+const convertor = (d,b) => Number(d).toString(Number(b)).toUpperCase();
+
+
 //base convertor
+// /baseConv?num=value
 router.get('/baseConv',(req,res)=>{
      res.writeHeader(200,{'content-type':'application/json'});
      let data = {};
-     let num =4;
-     let base = 2;
-     let ans = [];
-     do {
-         let rem = num%base;
-         ans.push(rem);
-         num= Math.floor(num/base);
-     }while(num>=base);
-     ans.push(num);
-     data["ans"] = ans;
+     let num =req.query.num;
+     data = {
+         binary : convertor(num,2),
+         octal : convertor(num,8),
+         hexadecimal: convertor(num,16)
+     } 
      res.end(JSON.stringify(data))
 });
 
-let client_id = "59093667348a881aa242";
-let client_secret = "ac489455f2c0e576383b89f513403ad885025684";
- 
+
 
 
 const getUserData = async (url,settings)=>{
@@ -45,7 +44,7 @@ const getUserData = async (url,settings)=>{
     return data;
 } 
 
-
+// /githubExo/user
 router.get('/githubExp/:user',(req,res)=> {
     res.writeHeader(200,{"content-type":'application/json',"Accept":"application/vnd.github.v3+json"});
     let url = `https://api.github.com/users/${req.params.user}`;
