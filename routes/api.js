@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 const router =express.Router();
 
 //temperature convertor
-router.post('/tempConv',(req,res)=>{
+router.get('/tempConv',(req,res)=>{
     res.writeHead(200,{'content-type':'application/json'});
     let data = {};
     switch(req.query.mode) {
@@ -18,7 +18,7 @@ router.post('/tempConv',(req,res)=>{
 });
 
 //base convertor
-router.post('/baseConv',(req,res)=>{
+router.get('/baseConv',(req,res)=>{
      res.writeHeader(200,{'content-type':'application/json'});
      let data = {};
      let num =4;
@@ -51,9 +51,7 @@ router.get('/githubExp/:user',(req,res)=> {
     let url = `https://api.github.com/users/${req.params.user}`;
     let settings = {method:'GET'};
     getUserData(url,settings)
-            .then(data => res.end(JSON.stringify(data)));
-      
-         
+            .then(data => res.end(JSON.stringify(data)));        
 })
 
 module.exports = router;
