@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRoute = require("./routes/auth.js");
 const postRoute = require("./routes/posts.js");
+const apiCoreRoute = require("./routes/api.js");
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -21,6 +22,7 @@ mongoose.connect(
  });
 
 app.use(express.json());
+app.use('/api',apiCoreRoute),
 app.use('/api/users',authRoute);
 app.use('/api/posts',postRoute);
 
