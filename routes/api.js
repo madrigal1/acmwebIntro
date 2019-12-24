@@ -2,6 +2,8 @@ const express =require("express");
 const fetch = require("node-fetch");
 const router =express.Router();
 
+
+
 //temperature convertor
 router.get('/tempConv',(req,res)=>{
     res.writeHead(200,{'content-type':'application/json'});
@@ -26,7 +28,7 @@ const convertor = (d,b) => Number(d).toString(Number(b)).toUpperCase();
 router.get('/baseConv',(req,res)=>{
      res.writeHeader(200,{'content-type':'application/json'});
      let data = {};
-     let num =req.query.num;
+     let num =req.query.value;
      data = {
          binary : convertor(num,2),
          octal : convertor(num,8),
@@ -52,5 +54,7 @@ router.get('/githubExp/:user',(req,res)=> {
     getUserData(url,settings)
             .then(data => res.end(JSON.stringify(data)));        
 })
+
+
 
 module.exports = router;

@@ -1,0 +1,60 @@
+const router = require("express").Router();
+const User = require("../models/User.js");
+const bcrypt = require("bcryptjs");
+const  {registerValidation,loginValidation} = require("../validation.js");
+const jwt =  require("jsonwebtoken");
+
+
+//User signup
+router.post('/register',async (req,res,next)=> {
+    /* registerValidation(req.body)
+             .then(data=> {
+                 console.log(value);
+                 return value;
+             }).catch((err)=> {
+                 console.log("error shows: " + err);
+             }); */
+
+
+  /* const emailExits = await User.findOne({email:req.body.email});
+  if(emailExits)  {
+     return next(boom.badRequest('email exists'));
+  }
+       
+
+
+    */
+   
+ savedUser = req.body;
+ const salt = await bcrypt.genSaltSync(10);
+ const hashedPwd = await bcrypt.hashSync(savedUser.pwd,salt);
+ savedUser.pwd = hashedPwd;
+ console.log(savedUser);
+   try {
+        const dbUser = await User.create(savedUser);
+        res.end(JSON.stringify(dbUser));
+        } catch (err) {
+            res.status(400).end(err);
+        }
+})
+
+
+
+router.post('/login',async (req,res)=> {
+
+       const {error} = loginValidation(req.body);
+       if(error) return res.status(404).send(error.details[0].message);
+
+
+       const user = await User.findOne({email:req.body.email});
+       if(!user) return res.status(404).send('User does not exist');
+       
+       const validPassword = await bcrypt.compare(req.body.pwd,user.pwd);
+       if(!validPassword) return res.status(404).send('invalid password');
+
+       const token = jwt.sign({_id:user._id},process.env.TOKEN_SECRECT);
+       res.header('auth-token',token).send(token);
+})
+
+
+module.exports = router;
