@@ -1,5 +1,4 @@
 const Joi = require("@hapi/joi");
-const boom = require("boom");
 
 const registerValidation = async (data) => {
        const schema = Joi.object({
@@ -11,8 +10,12 @@ const registerValidation = async (data) => {
            email: Joi.string().email(),
            date: Joi.date(),
        });
-        const value = await schema.validateAsync({ username: 'abc', birth_year: 1994 });
-        return value;
+       try {
+        const obj= await schema.validateAsync(data);
+        return obj;
+    } catch (err) { 
+       return err;
+    }
 };
 const loginValidation = async (data) => {
     const schema = Joi.object({
@@ -20,7 +23,8 @@ const loginValidation = async (data) => {
         email: Joi.string()
                .email(),
     });
-    return schema.validateAsync(data);
+    const value = await schema.validateAsync(data);
+    return value;
 };
 
 module.exports =  {

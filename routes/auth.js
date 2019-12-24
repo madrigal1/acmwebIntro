@@ -7,23 +7,12 @@ const jwt =  require("jsonwebtoken");
 
 //User signup
 router.post('/register',async (req,res,next)=> {
-    /* registerValidation(req.body)
-             .then(data=> {
-                 console.log(value);
-                 return value;
-             }).catch((err)=> {
-                 console.log("error shows: " + err);
-             }); */
+    const error= await registerValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+         
 
-
-  /* const emailExits = await User.findOne({email:req.body.email});
-  if(emailExits)  {
-     return next(boom.badRequest('email exists'));
-  }
-       
-
-
-    */
+  const emailExists = await User.findOne({email:req.body.email});
+  if(emailExists) return res.status(404).send('email exists') ;
    
  savedUser = req.body;
  const salt = await bcrypt.genSaltSync(10);
