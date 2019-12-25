@@ -4,7 +4,7 @@ const verify =require("./verifyToken")
 router.get('/',verify,(req,res)=> {
     res.json({posts: {
         title : 'my first post',
-        description: 'not accesssible'
+        description: 'post content'
     }});
 })
 
