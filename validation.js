@@ -12,7 +12,7 @@ const registerValidation = async (data) => {
        });
        try {
         const obj= await schema.validateAsync(data);
-        return obj;
+        return undefined;
     } catch (err) { 
        return err;
     }
@@ -23,8 +23,12 @@ const loginValidation = async (data) => {
         email: Joi.string()
                .email(),
     });
-    const value = await schema.validateAsync(data);
-    return value;
+       try {
+        const obj= await schema.validateAsync(data);
+        return undefined;
+    } catch (err) { 
+       return err;
+    }
 };
 
 module.exports =  {
