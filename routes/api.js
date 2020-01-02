@@ -6,7 +6,6 @@ const router =express.Router();
 
 //temperature convertor
 router.get('/tempConv',(req,res)=>{
-    res.writeHead(200,{'content-type':'application/json'});
     let data = {};
     switch(req.query.mode) {
         case 'cf':  data["answer"] = (9/5)*req.query.value+32;
@@ -15,8 +14,7 @@ router.get('/tempConv',(req,res)=>{
                     break;
         default:   data["answer"] = "error";
     }
-    
-     res.end(JSON.stringify(data));
+   res.send(data);
 });
 
 
